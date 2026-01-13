@@ -3,25 +3,22 @@
  * 문제 2-1: 인터페이스 정의
  */
 
-// 1. User: id(number), name(string), email(string), age(optional number)
 interface User {
   id: number;
   name: string;
   email: string;
-  age?: number; // ?는 선택적(optional) 속성
+  age?: number;
 }
 
-// 2. Post: id(number), title(string), content(string), author(User), createdAt(Date), tags(string array)
 interface Post {
   id: number;
   title: string;
   content: string;
-  author: User; // 위에서 정의한 User 인터페이스 사용
+  author: User;
   createdAt: Date;
   tags: string[];
 }
 
-// 3. Comment: id(number), content(string), author(User), post(Post)
 interface Comment {
   id: number;
   content: string;
@@ -29,14 +26,13 @@ interface Comment {
   post: Post;
 }
 
-// 4. API Response: success(boolean), data(generic), error(optional string)
 interface ApiResponse<T> {
   success: boolean;
-  data: T; // 제네릭을 사용하여 다양한 타입을 담을 수 있게 설정
+  data: T;
   error?: string;
 }
 
-// 테스트 (제공된 코드)
+// 테스트 데이터
 const user: User = {
   id: 1,
   name: "Kim",
@@ -55,6 +51,12 @@ const post: Post = {
 const response: ApiResponse<User[]> = {
   success: true,
   data: [user]
-  
 };
-export {}; 
+
+// --- 콘솔 출력 추가 ---
+console.log("--- 2-1 인터페이스 정의 결과 ---");
+console.log("생성된 유저:", user);
+console.log("생성된 포스트 제목:", post.title);
+console.log("API 응답 데이터:", response.data);
+
+export {};
