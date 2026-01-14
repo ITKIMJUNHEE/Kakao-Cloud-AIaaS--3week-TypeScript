@@ -5,13 +5,13 @@ interface IQueue<T> {
 
 class PriorityQueue<T> implements IQueue<T> {
   private items: T[] = [];
-  constructor(private compareFn: (a: T, b: T) => number) {}
+  private compareFn: (a: T, b: T) => number;
 
-  enqueue(item: T) {
-    this.items.push(item);
-    this.items.sort(this.compareFn);
+  constructor(compareFn: (a: T, b: T) => number) {
+    this.compareFn = compareFn;
   }
 
+  enqueue(item: T) { this.items.push(item); this.items.sort(this.compareFn); }
   dequeue() { return this.items.shift(); }
 }
 
@@ -20,6 +20,9 @@ const pq = new PriorityQueue<{ task: string; priority: number }>(
 );
 pq.enqueue({ task: "low", priority: 1 });
 pq.enqueue({ task: "high", priority: 10 });
-console.log(pq.dequeue());
+pq.enqueue({ task: "medium", priority: 5 });
+
+console.log(pq.dequeue()); 
+console.log(pq.dequeue()); 
 
 export {};

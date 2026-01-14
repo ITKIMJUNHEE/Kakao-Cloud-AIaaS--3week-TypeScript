@@ -8,30 +8,28 @@ interface Cache<K, V> {
 
 class TTLCache<K, V> implements Cache<K, V> {
   private cache = new Map<K, { value: V; expiresAt: number }>();
-  constructor(private defaultTTL: number = 60000) {}
+  private defaultTTL: number;
+
+  constructor(defaultTTL: number = 60000) {
+    this.defaultTTL = defaultTTL;
+  }
 
   set(key: K, value: V, ttl?: number) {
-    const expiresAt = Date.now() + (ttl ?? this.defaultTTL);
-    this.cache.set(key, { value, expiresAt });
+    this.cache.set(key, { value, expiresAt: Date.now() + (ttl ?? this.defaultTTL) });
   }
-
-  get(key: K): V | undefined {
+  get(key: K) {
     const entry = this.cache.get(key);
-    if (!entry) return undefined;
-    if (Date.now() > entry.expiresAt) {
-      this.cache.delete(key);
-      return undefined;
-    }
+    if (!entry || Date.now() > entry.expiresAt) { this.cache.delete(key); return undefined; }
     return entry.value;
   }
-
   has(key: K) { return this.get(key) !== undefined; }
   delete(key: K) { return this.cache.delete(key); }
   clear() { this.cache.clear(); }
 }
 
-const cache = new TTLCache<string, number>(1000);
+const cache = new TTLCache<string, number>(1000); 
 cache.set("key1", 100);
-console.log(cache.get("key1"));
-setTimeout(() => console.log("1.5초 후:", cache.get("key1")), 1500);
-export {}; 
+console.log(cache.get("key1")); 
+setTimeout(() => console.log(cache.get("key1")), 1500);
+
+export {};

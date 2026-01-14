@@ -1,27 +1,20 @@
 function pick<T, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {
-  const result = {} as Pick<T, K>;
-  keys.forEach(k => result[k] = obj[k]);
-  return result;
+  const res = {} as any;
+  keys.forEach(k => res[k] = obj[k]);
+  return res;
 }
-
 function omit<T, K extends keyof T>(obj: T, keys: K[]): Omit<T, K> {
-  const result = { ...obj };
-  keys.forEach(k => delete result[k]);
-  return result as Omit<T, K>;
+  const res = { ...obj };
+  keys.forEach(k => delete res[k]);
+  return res as any;
 }
-
 function updateProperty<T, K extends keyof T>(obj: T, key: K, value: T[K]): T {
   return { ...obj, [key]: value };
 }
-export {};
-// 테스트
+
 const user = { id: 1, name: "Kim", email: "kim@test.com", age: 25 };
+console.log(pick(user, ["id", "name"]));
+console.log(omit(user, ["email"]));
+console.log(updateProperty(user, "age", 26));
 
-const picked = pick(user, ["id", "name"]);
-// { id: 1, name: "Kim" }
-
-const omitted = omit(user, ["email"]);
-// { id: 1, name: "Kim", age: 25 }
-
-const updated = updateProperty(user, "age", 26);
-// { id: 1, name: "Kim", email: "kim@test.com", age: 26 }
+export {};

@@ -1,132 +1,83 @@
 class Stack<T> {
   private items: T[] = [];
-
-  push(item: T): void {
-    this.items.push(item);
-  }
-
-  pop(): T | undefined {
-    return this.items.pop();
-  }
-
-  peek(): T | undefined {
-    return this.items[this.items.length - 1];
-  }
-
-  isEmpty(): boolean {
-    return this.items.length === 0;
-  }
-
-  get size(): number {
-    return this.items.length;
-  }
+  push(item: T) { this.items.push(item); }
+  pop() { return this.items.pop(); }
+  peek() { return this.items[this.items.length - 1]; }
+  isEmpty() { return this.items.length === 0; }
+  get size() { return this.items.length; }
 }
 
 class Queue<T> {
   private items: T[] = [];
-
-  enqueue(item: T): void {
-    this.items.push(item);
-  }
-
-  dequeue(): T | undefined {
-    return this.items.shift();
-  }
-
-  front(): T | undefined {
-    return this.items[0];
-  }
-
-  isEmpty(): boolean {
-    return this.items.length === 0;
-  }
-
-  get size(): number {
-    return this.items.length;
-  }
+  enqueue(item: T) { this.items.push(item); }
+  dequeue() { return this.items.shift(); }
+  front() { return this.items[0]; }
+  isEmpty() { return this.items.length === 0; }
+  get size() { return this.items.length; }
 }
 
 class Node<T> {
-  constructor(public value: T, public next: Node<T> | null = null) {}
+  value: T;
+  next: Node<T> | null;
+  constructor(value: T, next: Node<T> | null = null) {
+    this.value = value;
+    this.next = next;
+  }
 }
 
 class LinkedList<T> {
   private head: Node<T> | null = null;
-
-  append(item: T): void {
-    const newNode = new Node(item);
-    if (!this.head) {
-      this.head = newNode;
-      return;
+  append(item: T) {
+    const node = new Node(item);
+    if (!this.head) this.head = node;
+    else {
+      let curr = this.head;
+      while (curr.next) curr = curr.next;
+      curr.next = node;
     }
-    let current = this.head;
-    while (current.next) {
-      current = current.next;
-    }
-    current.next = newNode;
   }
-
-  prepend(item: T): void {
-    this.head = new Node(item, this.head);
-  }
-
-  delete(item: T): void {
+  prepend(item: T) { this.head = new Node(item, this.head); }
+  delete(item: T) {
     if (!this.head) return;
-
-    if (this.head.value === item) {
-      this.head = this.head.next;
-      return;
-    }
-
-    let current = this.head;
-    while (current.next) {
-      if (current.next.value === item) {
-        current.next = current.next.next;
-        return;
-      }
-      current = current.next;
+    if (this.head.value === item) { this.head = this.head.next; return; }
+    let curr = this.head;
+    while (curr.next) {
+      if (curr.next.value === item) { curr.next = curr.next.next; return; }
+      curr = curr.next;
     }
   }
-
-  find(item: T): Node<T> | null {
-    let current = this.head;
-    while (current) {
-      if (current.value === item) return current;
-      current = current.next;
-    }
+  find(item: T) {
+    let curr = this.head;
+    while (curr) { if (curr.value === item) return curr; curr = curr.next; }
     return null;
   }
-
-  toArray(): T[] {
-    const result: T[] = [];
-    let current = this.head;
-    while (current) {
-      result.push(current.value);
-      current = current.next;
-    }
-    return result;
+  toArray() {
+    const res: T[] = [];
+    let curr = this.head;
+    while (curr) { res.push(curr.value); curr = curr.next; }
+    return res;
   }
 }
 
 const stack = new Stack<number>();
 stack.push(1);
 stack.push(2);
-console.log(stack.pop());
-console.log(stack.peek());
-console.log(stack.size);
+console.log(stack.pop());  
+console.log(stack.peek()); 
+console.log(stack.size);   
 
 const queue = new Queue<string>();
 queue.enqueue("a");
 queue.enqueue("b");
-console.log(queue.dequeue());
-console.log(queue.front());
+console.log(queue.dequeue()); 
+console.log(queue.front());   
 
 const list = new LinkedList<number>();
 list.append(1);
 list.append(2);
 list.prepend(0);
-console.log(list.toArray());
+console.log(list.toArray()); 
 list.delete(1);
-console.log(list.toArray());
+console.log(list.toArray()); 
 
 export {};

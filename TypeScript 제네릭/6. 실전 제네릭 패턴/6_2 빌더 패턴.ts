@@ -1,15 +1,45 @@
-class QueryBuilderImpl<T> {
-  private query: string = "";
-  constructor(private table: string) {}
-  select(...fields: string[]) { this.query += `SELECT ${fields.join(', ')} FROM ${this.table}`; return this; }
-  where(field: string, value: any) { this.query += ` WHERE ${field} = ${value}`; return this; }
-  build() { return this.query; }
+interface IQueryBuilder<T> {
+  select(...fields: (keyof T)[]): IQueryBuilder<T>;
+  where<K extends keyof T>(field: K, value: T[K]): IQueryBuilder<T>;
+  orderBy(field: keyof T, direction: "asc" | "desc"): IQueryBuilder<T>;
+  limit(count: number): IQueryBuilder<T>;
+  build(): string;
 }
 
-function createQueryBuilder<T>(table: string) {
-  return new QueryBuilderImpl<T>(table) as any;
+class QueryBuilder<T> implements IQueryBuilder<T> {
+  private query: string = "";
+  private table: string;
+
+  constructor(table: string) {
+    this.table = table;
+  }
+
+  select(...fields: (keyof T)[]) {
+    this.query += `SELECT ${fields.join(", ")} FROM ${this.table}`;
+    return this;
+  }
+
+  where<K extends keyof T>(field: K, value: T[K]) {
+    const formattedValue = typeof value === "string" ? `'${value}'` : value;
+    this.query += ` WHERE ${String(field)} = ${formattedValue}`;
+    return this;
+  }
+
+  orderBy(field: keyof T, direction: "asc" | "desc") {
+    this.query += ` ORDER BY ${String(field)} ${direction.toUpperCase()}`;
+    return this;
+  }
+
+  limit(count: number) {
+    this.query += ` LIMIT ${count}`;
+    return this;
+  }
+
+  build(): string {
+    return this.query;
+  }
 }
-// 테스트
+
 interface User {
   id: number;
   name: string;
@@ -17,11 +47,14 @@ interface User {
   age: number;
 }
 
-const query = createQueryBuilder<User>("users")
+const builder = new QueryBuilder<User>("users");
+const result = builder
   .select("id", "name")
   .where("age", 25)
   .orderBy("name", "asc")
   .limit(10)
   .build();
 
-// SELECT id, name FROM users WHERE age = 25 ORDER BY name ASC LIMIT 10
+console.log(result);
+
+export {};

@@ -1,6 +1,3 @@
-// 실습 1: 기본 타입
-// 문제 1-1: 타입 추론
-
 const a = "hello";          
 let b = "hello";            
 const c = [1, 2, 3];        
@@ -14,10 +11,6 @@ function g() {
 
 const h = [1, 2, 3].map(x => x.toString()); 
 
-// --- 콘솔 출력 추가 ---
-console.log("--- 1-1 타입 추론 결과 ---");
-console.log("a:", a);
-console.log("b:", b);
-// ... 생략 ...
+console.log(typeof a, typeof b, Array.isArray(c), typeof d, typeof e, typeof f, typeof g(), typeof h);
 
-export {}; // 👈 이 줄을 추가하면 빨간 줄이 사라집니다!
+export {};

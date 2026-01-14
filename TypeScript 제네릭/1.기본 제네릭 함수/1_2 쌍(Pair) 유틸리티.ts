@@ -7,15 +7,15 @@ function swap<T, U>(pair: [T, U]): [U, T] {
 }
 
 function fromPairs<K extends string | number, V>(pairs: [K, V][]): Record<K, V> {
-  const result = {} as Record<K, V>;
-  pairs.forEach(([key, value]) => {
-    result[key] = value;
-  });
-  return result;
+  const res = {} as Record<K, V>;
+  pairs.forEach(([k, v]) => res[k] = v);
+  return res;
 }
 
-const pair = makePair("name", 42);
-console.log(swap(pair));
-console.log(fromPairs([["a", 1], ["b", 2]]));
+const pair = makePair("name", 42);       
+const swapped = swap(pair);               
+const obj = fromPairs([["a", 1], ["b", 2]]); 
+
+console.log(pair, swapped, obj);
 
 export {};

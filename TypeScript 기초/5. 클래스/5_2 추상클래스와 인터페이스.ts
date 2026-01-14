@@ -10,45 +10,34 @@ abstract class PaymentProcessor {
 
 class CreditCardProcessor extends PaymentProcessor {
   async process(amount: number, currency: string): Promise<PaymentResult> {
-    return {
-      success: true,
-      transactionId: `CARD-${Math.random().toString(36).substr(2, 9)}`
-    };
+    return { success: true, transactionId: `CREDIT-${Date.now()}` };
   }
 }
 
 class PayPalProcessor extends PaymentProcessor {
   async process(amount: number, currency: string): Promise<PaymentResult> {
-    return {
-      success: true,
-      transactionId: `PAYPAL-${Math.random().toString(36).substr(2, 9)}`
-    };
+    return { success: true, transactionId: `PAYPAL-${Date.now()}` };
   }
 }
 
 class CryptoProcessor extends PaymentProcessor {
   async process(amount: number, currency: string): Promise<PaymentResult> {
-    return {
-      success: true,
-      transactionId: `CRYPTO-${Math.random().toString(36).substr(2, 9)}`
-    };
+    return { success: true, transactionId: `CRYPTO-${Date.now()}` };
   }
 }
 
 class PaymentFactory {
   static create(type: "credit" | "paypal" | "crypto"): PaymentProcessor {
-    switch (type) {
-      case "credit": return new CreditCardProcessor();
-      case "paypal": return new PayPalProcessor();
-      case "crypto": return new CryptoProcessor();
-    }
+    if (type === "credit") return new CreditCardProcessor();
+    if (type === "paypal") return new PayPalProcessor();
+    return new CryptoProcessor();
   }
 }
 
 (async () => {
   const creditProcessor = PaymentFactory.create("credit");
   const result = await creditProcessor.process(100, "USD");
-  console.log("결제 결과:", result);
+  console.log(result);
 })();
 
 export {};

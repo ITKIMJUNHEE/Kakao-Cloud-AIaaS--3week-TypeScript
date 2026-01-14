@@ -1,8 +1,3 @@
-/**
- * 실습 2: 인터페이스와 타입
- * 문제 2-1: 인터페이스 정의
- */
-
 interface User {
   id: number;
   name: string;
@@ -32,7 +27,6 @@ interface ApiResponse<T> {
   error?: string;
 }
 
-// 테스트 데이터
 const user: User = {
   id: 1,
   name: "Kim",
@@ -53,10 +47,6 @@ const response: ApiResponse<User[]> = {
   data: [user]
 };
 
-// --- 콘솔 출력 추가 ---
-console.log("--- 2-1 인터페이스 정의 결과 ---");
-console.log("생성된 유저:", user);
-console.log("생성된 포스트 제목:", post.title);
-console.log("API 응답 데이터:", response.data);
+console.log(user, post, response);
 
 export {};

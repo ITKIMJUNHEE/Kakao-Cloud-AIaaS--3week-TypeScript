@@ -18,5 +18,9 @@ class UniqueCollection<T> implements Collection<T> {
 const collection = new UniqueCollection<number>();
 collection.add(1);
 collection.add(2);
-collection.add(1);
-console.log(collection.toArray());
+collection.add(1);  
+console.log(collection.size());      
+console.log(collection.contains(1)); 
+console.log(collection.toArray());   
+
+export {};
